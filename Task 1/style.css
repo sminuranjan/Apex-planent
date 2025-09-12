@@ -1,0 +1,90 @@
+*{
+    margin: 0;
+    padding: 0;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    box-sizing: border-box;
+}
+.container{
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    background-image:linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.4)), url(https://images.pexels.com/photos/378442/pexels-photo-378442.jpeg?cs=srgb&dl=dawn-nature-sky-378442.jpg&fm=jpg);
+ background-position: center;
+    justify-content: center;
+    align-items: center;
+    background-size: cover;
+}
+.form-box{
+    width: 90%;
+    max-width: 450px;
+    min-width: 350px;
+    background: white;
+    padding: 55px;
+    text-align: center;
+    border-radius: 10px;
+    box-shadow: -2px 2px 15px rgba(0,0,0,0.5);
+}
+.form-box h1{
+    font-size: 30px;
+    color: green;
+}
+.form-box .underline{
+    width: 100px; /* was 30px */
+    height: 4px;
+    background: green;
+    margin: 10px auto 50px auto;
+    border-radius: 5px; /* was 0.5s */
+}
+.input-field{
+    background: rgb(235, 218, 218);
+   display: flex;
+    align-items: center;
+    max-height: 60px;
+    transition: max-height 0.5s;
+    overflow: hidden;
+    margin:15px 0;
+    border-radius: 10px;
+}
+.input-field input{
+    width: 100%;
+    padding: 18px 15px;
+    border: 0;
+    outline: 0;
+    background: transparent;
+}
+.input-field i {
+    margin-left: 15px;
+    color: #999;
+}
+form p{
+    text-align: left;
+    font-size: 13px;
+}
+form p a{
+    text-decoration: none;
+    color: green;
+}
+.btn-field{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+.btn-field button{
+    flex-basis: 48%;
+    background: green;
+    color: white;
+    height: 40px;
+    border-radius: 20px;
+    border: 0;
+    outline: 0;
+    cursor: pointer;
+    transition: background 1s;
+}
+.input-group{
+    height: 280px;
+}
+button.disable{
+    background: rgb(185, 185, 185);
+    color: #555;
+}
+

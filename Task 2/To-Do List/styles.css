@@ -1,0 +1,141 @@
+/* Reset / basic setup */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  line-height: 1.5;
+  background: rgb(5, 147, 172);
+}
+
+/* Header / Navigation using Flexbox */
+.header {
+  background-color: #333;
+  color: #fff;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header .logo {
+  font-size: 1.5em;
+  background: #333;
+}
+
+.header .nav ul {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+}
+
+.header .nav a {
+  color: white;
+  text-decoration: none;
+}
+
+.menu-toggle {
+  display: none; /* will be displayed on small screens */
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.5em;
+}
+
+/* Main layout using CSS Grid */
+.main-grid {
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  gap: 20px;
+  padding: 20px;
+}
+
+.sidebar {
+  background-color: #f4f4f4;
+  padding: 15px;
+}
+
+.content {
+  background-color: #fff;
+  padding: 15px;
+}
+
+/* Footer */
+.footer {
+  text-align: center;
+  padding: 15px;
+  background-color: #333;
+  color: white;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .header .nav ul {
+    display: none; /* hide nav links */
+  }
+  .menu-toggle {
+    display: block;
+  }
+  .main-grid {
+    grid-template-columns: 1fr; /* one column layout on small screens */
+  }
+  .header .nav ul.active {
+    display: flex !important;
+    flex-direction: column;
+    position: absolute;
+    top: 60px;
+    right: 20px;
+    background: #333;
+    padding: 10px;
+    gap: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    z-index: 100;
+  }
+}
+.todo {
+  margin-top: 30px;
+}
+
+#todo-input {
+  padding: 8px;
+  width: 70%;
+  max-width: 300px;
+}
+
+#add-task-btn {
+  padding: 8px 12px;
+  margin-left: 10px;
+}
+
+#todo-list {
+  list-style: none;
+  margin-top: 20px;
+}
+
+#todo-list li {
+  padding: 10px;
+  background-color: #f4f4f4;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#todo-list li.completed {
+  text-decoration: line-through;
+  color: #999;
+}
+
+li button.delete-btn {
+  background-color: #e74c3c;
+  border: none;
+  color: white;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+li button.delete-btn:hover {
+  background-color: #c0392b;
+}

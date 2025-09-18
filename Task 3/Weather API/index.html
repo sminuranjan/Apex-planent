@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Futuristic Weather — Full</title>
+
+  <!-- Tailwind for layout -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+  <!-- lottie-web for center animations -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.10.1/lottie.min.js"></script>
+
+  <!-- External CSS -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- canvas for rain/snow/fog/lightning -->
+  <canvas id="sky-canvas"></canvas>
+
+  <!-- DOM sky elements (sun/moon/clouds/stars) -->
+  <div id="sky-elements"></div>
+
+  <!-- Lottie overlay -->
+  <div id="lottie-overlay"><div id="lottie-inner"></div></div>
+
+  <div class="content">
+    <header>
+      <div class="flex items-center gap-4">
+        <h1 class="text-2xl font-semibold text-white">Weather Forecast</h1>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <div class="search-wrap">
+          <div class="relative w-full">
+            <input id="searchBox" class="search-box glass w-full py-2 px-4 rounded-lg text-white" placeholder="Search location (city, country)" />
+  
+            <!-- Magnifying glass icon -->
+            <div class="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16z" />
+              </svg>
+            </div>
+          </div>
+
+          <button id="searchBtn" class="search-icon" title="Search"><i class="fas fa-magnifying-glass fa-lg"></i></button>
+        </div>
+
+        <button id="locBtn" class="glass px-3 py-2 rounded-full text-white">Use my location</button>
+        <button id="setDefaultBtn" class="glass px-3 py-2 rounded-full text-white">Set as Default</button>
+      </div>
+    </header>
+
+    <main>
+      <section class="grid grid-cols-1 md:grid-cols-3 gap-8 grid-main max-w-6xl mx-auto px-4">
+        <div class="md:col-span-2 glass p-6 rounded-2xl relative overflow-hidden">
+          <div class="flex items-start justify-between">
+            <div>
+              <div id="location" class="text-lg font-semibold opacity-95 text-white">Brahmapur, IN</div>
+              <div id="dateTime" class="text-sm opacity-70 mt-1 text-white">Loading...</div>
+
+              <div class="mt-6 flex items-baseline gap-4">
+                <div id="temp" class="text-5xl font-extrabold text-white">--<span class="text-2xl">°C</span></div>
+                <div class="text-left">
+                  <div id="desc" class="text-lg opacity-90 text-white">--</div>
+                  <div id="feels" class="text-sm opacity-60 mt-1 text-white">--</div>
+                  <div class="mt-3 flex gap-2 items-center">
+                    <div class="chip glass px-3 py-2 text-sm text-white">Humidity: <span id="hum">--</span></div>
+                    <div class="chip glass px-3 py-2 text-sm text-white">Wind: <span id="wind">--</span></div>
+                    <div class="chip glass px-3 py-2 text-sm text-white">Pressure: <span id="pressure">--</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="w-44 h-44 relative">
+              <div id="skyIcon" class="absolute inset-0 flex items-center justify-center"></div>
+            </div>
+          </div>
+
+          <div class="mt-8">
+            <div class="flex items-center gap-6 text-sm opacity-80 mb-3 text-white">
+              <div class="font-semibold">Temperature</div><div>Wind</div><div>Precip</div><div>Humidity</div>
+            </div>
+            <div id="hourlyRow" class="flex gap-3 overflow-x-auto pb-3"></div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="max-w-6xl mx-auto px-4 mb-8">
+      <div class="flex justify-between items-center text-sm text-white/60">
+        <div>Data: OpenWeatherMap · Demo</div>
+        <div>Made by SUBHASREE SAHU</div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- External JS -->
+  <script src="script.js"></script>
+</body>
+</html>

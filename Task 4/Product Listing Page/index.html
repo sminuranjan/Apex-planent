@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Listing Page</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+        }
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+        .product-card {
+            display: flex;
+            flex-direction: column;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+            overflow: hidden;
+        }
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+        }
+        .star-rating {
+            color: #fbbf24;
+        }
+    </style>
+</head>
+<body class="p-6 md:p-10">
+
+    <div class="max-w-7xl mx-auto">
+        <header class="mb-8 text-center">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-gray-800">Our Products</h1>
+            <p class="text-gray-500 mt-2">Discover our curated collection of amazing products.</p>
+        </header>
+
+        <!-- Controls Section -->
+        <div class="bg-white p-6 rounded-2xl shadow-lg mb-8 flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0 md:space-x-4">
+            <!-- Search & Filters -->
+            <div class="flex-grow flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4 w-full md:w-auto">
+                <input type="text" id="searchInput" placeholder="Search products..."
+                       class="w-full md:w-64 p-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-200">
+                
+                <!-- Category Buttons -->
+                <div class="flex flex-wrap gap-2">
+                    <button class="filter-btn bg-indigo-500 text-white font-medium px-4 py-2 rounded-xl transition duration-200 hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500" data-category="all">All</button>
+                    <button class="filter-btn bg-gray-200 text-gray-700 font-medium px-4 py-2 rounded-xl transition duration-200 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400" data-category="electronics">Electronics</button>
+                    <button class="filter-btn bg-gray-200 text-gray-700 font-medium px-4 py-2 rounded-xl transition duration-200 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400" data-category="clothing">Clothing</button>
+                    <button class="filter-btn bg-gray-200 text-gray-700 font-medium px-4 py-2 rounded-xl transition duration-200 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400" data-category="home">Home</button>
+                </div>
+            </div>
+
+            <!-- Sort Dropdown -->
+            <div class="relative w-full md:w-auto">
+                <label for="sortSelect" class="sr-only">Sort by:</label>
+                <select id="sortSelect" class="w-full md:w-48 p-3 rounded-xl border border-gray-300 bg-white text-gray-700 appearance-none pr-10 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-200">
+                    <option value="default">Sort By</option>
+                    <option value="price-asc">Price (Low to High)</option>
+                    <option value="price-desc">Price (High to Low)</option>
+                    <option value="rating-desc">Rating (High to Low)</option>
+                </select>
+                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-700">
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product Grid -->
+        <div id="productGrid" class="product-grid">
+            <!-- Product cards will be dynamically inserted here -->
+        </div>
+
+        <!-- Message Box -->
+        <div id="messageBox" class="fixed bottom-4 right-4 bg-gray-800 text-white px-6 py-3 rounded-xl shadow-xl transition-all duration-300 transform translate-y-24 opacity-0 z-50">
+            Link copied to clipboard!
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // Sample product data
+            const products = [
+                { id: 1, name: 'Wireless Headphones', category: 'electronics', price: 129.99, rating: 4.8, image: 'https://placehold.co/400x300/4F46E5/ffffff?text=Headphones', description: 'Experience crystal-clear audio with these stylish wireless headphones.' },
+                { id: 2, name: 'Vintage T-Shirt', category: 'clothing', price: 24.99, rating: 4.2, image: 'https://placehold.co/400x300/10B981/ffffff?text=T-Shirt', description: 'A classic, comfortable t-shirt with a retro feel.' },
+                { id: 3, name: 'Smart Watch', category: 'electronics', price: 199.50, rating: 4.9, image: 'https://placehold.co/400x300/4F46E5/ffffff?text=Smart+Watch', description: 'Stay connected and track your fitness with this powerful smart watch.' },
+                { id: 4, name: 'Ceramic Coffee Mug', category: 'home', price: 12.00, rating: 4.5, image: 'https://placehold.co/400x300/F59E0B/ffffff?text=Mug', description: 'The perfect companion for your morning coffee or tea.' },
+                { id: 5, name: 'Slim Fit Jeans', category: 'clothing', price: 59.99, rating: 4.7, image: 'https://placehold.co/400x300/10B981/ffffff?text=Jeans', description: 'Modern and comfortable jeans, perfect for any occasion.' },
+                { id: 6, name: 'Mechanical Keyboard', category: 'electronics', price: 89.99, rating: 4.6, image: 'https://placehold.co/400x300/4F46E5/ffffff?text=Keyboard', description: 'A satisfying typing experience with a durable, ergonomic design.' },
+                { id: 7, name: 'Handcrafted Vase', category: 'home', price: 45.00, rating: 4.9, image: 'https://placehold.co/400x300/F59E0B/ffffff?text=Vase', description: 'A beautiful, unique vase to brighten up any room.' },
+                { id: 8, name: 'Waterproof Jacket', category: 'clothing', price: 85.00, rating: 4.8, image: 'https://placehold.co/400x300/10B981/ffffff?text=Jacket', description: 'Stay dry and stylish with this lightweight waterproof jacket.' },
+                { id: 9, name: 'Wireless Mouse', category: 'electronics', price: 35.00, rating: 4.3, image: 'https://placehold.co/400x300/4F46E5/ffffff?text=Mouse', description: 'A precise and comfortable wireless mouse for work and play.' },
+                { id: 10, name: 'Decorative Pillow', category: 'home', price: 25.00, rating: 4.1, image: 'https://placehold.co/400x300/F59E0B/ffffff?text=Pillow', description: 'Add a touch of color and comfort to your living space.' },
+            ];
+
+            const productGrid = document.getElementById('productGrid');
+            const searchInput = document.getElementById('searchInput');
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            const sortSelect = document.getElementById('sortSelect');
+            const messageBox = document.getElementById('messageBox');
+
+            let currentCategory = 'all';
+            let currentSort = 'default';
+            let currentSearch = '';
+
+            const renderProducts = (filteredProducts) => {
+                productGrid.innerHTML = '';
+                if (filteredProducts.length === 0) {
+                    productGrid.innerHTML = '<p class="col-span-full text-center text-gray-500 text-lg py-10">No products found matching your criteria.</p>';
+                    return;
+                }
+
+                filteredProducts.forEach(product => {
+                    const productCard = document.createElement('div');
+                    productCard.className = 'product-card bg-white p-4 cursor-pointer';
+
+                    const stars = '<span class="star-rating">' + '★'.repeat(Math.floor(product.rating)) + '</span>' + '<span class="text-gray-300">★'.repeat(5 - Math.floor(product.rating)) + '</span>';
+
+                    productCard.innerHTML = `
+                        <img src="${product.image}" alt="${product.name}" class="w-full h-48 object-cover rounded-xl mb-4">
+                        <div class="flex-grow flex flex-col justify-between">
+                            <h3 class="text-xl font-semibold text-gray-900 truncate">${product.name}</h3>
+                            <div class="flex items-center justify-between mt-2">
+                                <span class="text-gray-500 text-sm capitalize">${product.category}</span>
+                                <span class="text-lg font-bold text-indigo-600">$${product.price.toFixed(2)}</span>
+                            </div>
+                            <p class="text-gray-600 text-sm mt-2">${product.description}</p>
+                            <div class="flex items-center justify-between mt-4">
+                                <div class="text-sm font-medium">
+                                    ${stars}
+                                    <span class="text-xs text-gray-500 ml-1">(${product.rating})</span>
+                                </div>
+                                <button class="copy-btn bg-indigo-500 text-white font-medium px-4 py-2 rounded-lg text-sm hover:bg-indigo-600 transition duration-200" data-id="${product.id}">Copy Link</button>
+                            </div>
+                        </div>
+                    `;
+
+                    productGrid.appendChild(productCard);
+                });
+
+                document.querySelectorAll('.copy-btn').forEach(button => {
+                    button.addEventListener('click', (event) => {
+                        const productId = event.target.getAttribute('data-id');
+                        const productUrl = `${window.location.origin}${window.location.pathname}#product-${productId}`;
+                        copyToClipboard(productUrl);
+                    });
+                });
+            };
+
+            const copyToClipboard = (text) => {
+                const tempInput = document.createElement('textarea');
+                tempInput.value = text;
+                document.body.appendChild(tempInput);
+                tempInput.select();
+                document.execCommand('copy');
+                document.body.removeChild(tempInput);
+                
+                messageBox.classList.remove('translate-y-24', 'opacity-0');
+                messageBox.classList.add('translate-y-0', 'opacity-100');
+                setTimeout(() => {
+                    messageBox.classList.remove('translate-y-0', 'opacity-100');
+                    messageBox.classList.add('translate-y-24', 'opacity-0');
+                }, 2000);
+            };
+
+            const updateProducts = () => {
+                let filteredProducts = products;
+
+                // 1. Filter by category
+                if (currentCategory !== 'all') {
+                    filteredProducts = filteredProducts.filter(p => p.category === currentCategory);
+                }
+
+                // 2. Filter by search input
+                const searchTerm = currentSearch.toLowerCase();
+                if (searchTerm) {
+                    filteredProducts = filteredProducts.filter(p => 
+                        p.name.toLowerCase().includes(searchTerm) ||
+                        p.description.toLowerCase().includes(searchTerm)
+                    );
+                }
+
+                // 3. Sort the filtered list
+                if (currentSort === 'price-asc') {
+                    filteredProducts.sort((a, b) => a.price - b.price);
+                } else if (currentSort === 'price-desc') {
+                    filteredProducts.sort((a, b) => b.price - a.price);
+                } else if (currentSort === 'rating-desc') {
+                    filteredProducts.sort((a, b) => b.rating - a.rating);
+                }
+                
+                renderProducts(filteredProducts);
+            };
+
+            // Event Listeners
+            filterButtons.forEach(button => {
+                button.addEventListener('click', (event) => {
+                    // Update active button classes
+                    filterButtons.forEach(btn => {
+                        btn.classList.remove('bg-indigo-500', 'text-white');
+                        btn.classList.add('bg-gray-200', 'text-gray-700');
+                    });
+                    event.target.classList.remove('bg-gray-200', 'text-gray-700');
+                    event.target.classList.add('bg-indigo-500', 'text-white');
+
+                    currentCategory = event.target.dataset.category;
+                    updateProducts();
+                });
+            });
+
+            sortSelect.addEventListener('change', (event) => {
+                currentSort = event.target.value;
+                updateProducts();
+            });
+
+            searchInput.addEventListener('input', (event) => {
+                currentSearch = event.target.value.trim();
+                updateProducts();
+            });
+
+            // Initial render
+            updateProducts();
+        });
+    </script>
+</body>
+</html>
